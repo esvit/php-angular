@@ -1,0 +1,22 @@
+{
+    "name": "bazalt/angular",
+    "license": "New BSD License",
+    "authors": [
+        {
+            "name": "Vitalii Savchuk",
+            "email": "esvit666@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "Bazalt\\Angular": "src/"
+        }
+    },
+    "require": {
+        "php": ">=5.4.0",
+        "analog/analog": "dev-master"
+    },
+    "require-dev": {
+        "satooshi/php-coveralls": "dev-master"
+    }
+}

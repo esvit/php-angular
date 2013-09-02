@@ -1,0 +1,20 @@
+language: php
+
+php:
+  - 5.4
+  - 5.5
+
+env:
+  - APPLICATION_ENV="testing"
+
+before_script:
+  - composer self-update
+  - composer install --dev --no-interaction
+
+script:
+  - mkdir -p tmp/logs
+  - mkdir -p build/logs
+  - phpunit --configuration phpunit.xml.dist
+
+after_script:
+  - php vendor/bin/coveralls -v
