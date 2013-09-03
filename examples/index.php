@@ -2,18 +2,27 @@
 
 require_once '../vendor/autoload.php';
 
-$ng = new \Bazalt\Angular("views/index.html");
-$ng->directive('ng-app', [
+$angular = new \Bazalt\Angular("views/index.html");
+$app = $angular->module('app', [
+    'dir' => __DIR__,
+    'file' => '/views/index.html'
+]);
+
+$app->directive('ng-app', [
     'restrict' => 'A',
     'class' => 'Bazalt\\Angular\\Directive\\NgApp'
 ]);
-$ng->directive('ng-model', [
+$app->directive('ng-model', [
     'restrict' => 'A',
     'class' => 'Bazalt\\Angular\\Directive\\NgModel'
 ]);
-$ng->directive('ng-repeat', [
+$app->directive('ng-repeat', [
     'restrict' => 'A',
     'class' => 'Bazalt\\Angular\\Directive\\NgRepeat'
 ]);
+$app->directive('ng-include', [
+    'restrict' => 'A',
+    'class' => 'Bazalt\\Angular\\Directive\\NgInclude'
+]);
 
-echo $ng->html();
+echo $angular->bootstrap('app');

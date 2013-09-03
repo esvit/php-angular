@@ -4,52 +4,23 @@ namespace Bazalt;
 
 class Angular
 {
-    protected $document = null;
+    protected $modules = [];
 
-    protected $filename = null;
-
-    public $parser = null;
-    
-    protected $directives = [];
-
-    public function directives()
+    public function module($name, $options = null)
     {
-        return $this->directives;
+        if ($options !== null) {
+            $this->modules[$name] = new Angular\Module($name, $options);
+            return $this->modules[$name];
+        }
+        if (isset($this->modules[$name])) {
+            return $this->modules[$name];
+        }
+        return null;
     }
 
-    public function document()
+    public function bootstrap($name)
     {
-        return $this->document;
-    }
-
-    public function directive($name, $func)
-    {
-        $this->directives[$name] = $func;
-    }
-
-    public function __construct($filename)
-    {
-        $this->filename = $filename;
-    }
-
-    public function html()
-    {
-        $this->document = new \DOMDocument();
-        $this->document->loadHTMLFile($this->filename);
-
-        $this->parser = new Angular\Parse($this);
-
-        $rootScope = [
-            'test' => '123',
-            'yourName' => 'Vitalik',
-            'items' => [
-                '1', '2'
-            ]
-        ];
-
-        $node = $this->parser->parse($this->document, $rootScope);
-        $node->apply();
-
-        return $this->document->saveHtml();
+        $module = $this->modules[$name];
+        return $module->html();
     }
 }

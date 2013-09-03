@@ -8,18 +8,18 @@ abstract class Directive
 
     protected $scope = null;
 
-    protected $angular = null;
+    protected $module = null;
 
     protected $node = null;
 
-    public function __construct($element, $scope, $angular)
+    public function __construct($element, $scope, $module)
     {
         $this->scope = $scope;
         $this->element = $element;
-        $this->angular = $angular;
+        $this->module = $module;
     }
 
-    public function link(\DOMElement $element)
+    public function link($scope, \DOMElement $element, $attributes = [])
     {
     }
 

@@ -4,11 +4,11 @@ namespace Bazalt\Angular;
 
 class Parse
 {
-    protected $angular = null;
+    protected $module = null;
 
-    public function __construct($angular)
+    public function __construct($module)
     {
-        $this->angular = $angular;
+        $this->module = $module;
     }
 
     public function parse(\DOMNode $node, $scope)
@@ -30,7 +30,7 @@ class Parse
 
     protected function detectDirective(\DOMNode $node, $scope)
     {
-        $directives = $this->angular->directives();
+        $directives = $this->module->directives();
         $nodeDirectives = [];
 
         // if element - check attributes
@@ -40,7 +40,7 @@ class Parse
                 foreach ($directives as $name => $directive) {
                     if (strpos($directive['restrict'], 'A') !== false) {
                         if ($name == $attribute->name) {
-                            $nodeDirectives []= new $directive['class']($node, $scope, $this);
+                            $nodeDirectives []= new $directive['class']($node, $scope, $this->module);
                         }
                     }
                 }
