@@ -6,11 +6,13 @@ class Scope implements \ArrayAccess
 {
     protected $variables = null;
 
+    /** @var Scope */
     protected $parent = null;
 
-    public function __construct($variables)
+    public function __construct($variables = [], $parent = null)
     {
         $this->variables = $variables;
+        $this->parent = $parent;
     }
 
     public function newScope()
@@ -21,13 +23,33 @@ class Scope implements \ArrayAccess
         return $scope;
     }
 
+    public function getValue($compositeKey) {
+        $root = $this;
+
+        $keys = explode('.', $compositeKey);
+        while(count($keys) > 0) {
+            $key = array_shift($keys);
+            if(!isset($root[$key])) {
+                return null;
+            }
+            $root = $root[$key];
+        }
+        return $root;
+    }
+
     public function offsetExists($offset)
     {
-        return isset($this->variables[$offset]);
+        $localExists = isset($this->variables[$offset]);
+        $parentExists = isset($this->parent) && $this->parent->offsetExists($offset);
+
+        return $localExists || $parentExists;
     }
 
     public function offsetGet($offset)
     {
+        if (!isset($this->variables[$offset]) && $this->parent) {
+            return $this->parent->offsetGet($offset);
+        }
         return $this->variables[$offset];
     }
 

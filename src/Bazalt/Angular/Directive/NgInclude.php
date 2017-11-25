@@ -10,6 +10,7 @@ class NgInclude extends \Bazalt\Angular\Directive
     {
         $attrs = $this->attributes();
         $attrValue = trim($attrs['ng-include'], ' \'');
+        $this->element->removeAttribute('ng-include');
 
         $options = $this->module->options();
         $filename = $options['dir'] . $attrValue;

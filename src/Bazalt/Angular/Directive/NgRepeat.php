@@ -2,6 +2,7 @@
 
 namespace Bazalt\Angular\Directive;
 
+use Bazalt\Angular\Scope;
 use Analog\Analog;
 
 class NgRepeat extends \Bazalt\Angular\Directive
@@ -25,11 +26,12 @@ class NgRepeat extends \Bazalt\Angular\Directive
         foreach ($this->scope[$array] as $value) {
             $node = $this->element->cloneNode(true);
             $parent->insertBefore($node, $this->element);
-            
-            $this->scope[$item] = $value;
+
+            $scope = $this->scope->newScope();
+            $scope[$item] = $value;
 
             $node->removeAttribute('ng-repeat');
-            $nodes []= $this->module->parser->parse($node, $this->scope);
+            $nodes []= $this->module->parser->parse($node, $scope);
         }
         $parent->removeChild($this->element);
         $this->node->nodes($nodes);

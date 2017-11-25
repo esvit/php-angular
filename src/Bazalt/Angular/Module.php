@@ -12,7 +12,7 @@ class Module
 
     public $parser = null;
 
-    protected $rootScope = null;
+    public $rootScope = null;
     
     protected $directives = [];
 
@@ -20,6 +20,7 @@ class Module
     {
         $this->name = $name;
         $this->options = $options;
+        $this->rootScope = new Scope();
     }
 
     public function directives()
@@ -45,14 +46,6 @@ class Module
         $this->document->loadHTMLFile($filename);
 
         $this->parser = new Parse($this);
-
-        $this->rootScope = new Scope([
-            'test' => '123',
-            'yourName' => 'Vitalik',
-            'items' => [
-                '1', '2'
-            ]
-        ]);
 
         $node = $this->parser->parse($this->document, $this->rootScope);
         $node->apply();

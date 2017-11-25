@@ -12,7 +12,9 @@
         </h1>
         
         <div ng-repeat="item in items">
-            {{item}}
+            <div ng-if="item.show">
+                {{item.title}}
+            </div>
         </div>
         
         <div ng-include="'/views/include.html'"></div>

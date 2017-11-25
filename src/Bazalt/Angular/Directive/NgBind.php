@@ -6,17 +6,18 @@ class NgBind extends \Bazalt\Angular\Directive
 {
     protected function parseValue($matches)
     {
-        $value = trim($matches['value']);
-        $filters = explode('|', trim($matches['filters'], ' |'));
-        //print_R($filters);
-        if (!isset($this->scope[$value])) {
-            return '{{' . $matches['value'] . '}}';
+        $key = trim($matches['value']);
+        $filters = isset($matches['filters']) ? explode('|', trim($matches['filters'], ' |')) : [];
+
+        $value = $this->scope->getValue($key);
+        if (!$value) {
+            return $matches[0];
         }
-        return $this->scope[$value];
+        return $value;
     }
 
     public function apply()
     {
-        $this->element->nodeValue = preg_replace_callback('|{{\s*(?<value>[a-z0-9]*)\s*(?<filters>.*)?\s*}}|im', [$this, 'parseValue'], $this->element->wholeText);
+        $this->element->nodeValue = preg_replace_callback('|{{\s*(?<value>[a-z0-9\.]*)\s*(\|\s*(?<filters>.*))?\s*}}|im', [$this, 'parseValue'], $this->element->wholeText);
     }
 }
